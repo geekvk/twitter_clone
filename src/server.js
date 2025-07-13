@@ -4,12 +4,19 @@ import { connectDatabase } from './config/db.js';
 
 const app = express()
 
-connectDatabase();
-
 app.get("/",(req,res) => {
     res.send("Hello")
 });
 
-app.listen(ENV.PORT, () => {
-    console.log(`App is runing ${ENV.PORT}`)
-})
+const startServer = async() => {
+    try{
+        await connectDatabase();
+        app.listen(ENV.PORT, () => {
+            console.log(`App is runing ${ENV.PORT}`)
+        })
+    }catch(error){
+        console.log("Faild to start server", error.message);
+        process.exit(1);
+    }
+}
+startServer()
