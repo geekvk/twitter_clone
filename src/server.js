@@ -7,13 +7,15 @@ import { clerkMiddleware } from "@clerk/express"
 import userRoutes from "./routes/user.route.js"
 import postRoutes from "./routes/post.route.js"
 import commentRoutes from "./routes/comment.route.js"
-import commentRoutes from "./routes/notification.route.js"
+import notificationRoutes from "./routes/notification.route.js"
+import { archjetMiddleware } from './middleware/arcjet.middleware.js';
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
 app.use(clerkMiddleware());
+app.use(archjetMiddleware);
 
 app.get("/",(req,res) => {
     res.send("Hello")
@@ -22,6 +24,8 @@ app.get("/",(req,res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/notification", notificationRoutes);
+
  // error handling middleware
  app.use((err, req, res, next) => {
     console.log("Unhandled error", err);
