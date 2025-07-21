@@ -1,10 +1,6 @@
 export const protectRoute = (req, res, next) => {
-  const auth = getAuth(req);
-
-  if (!auth.userId) {
-    return res.status(401).json({ message: "Unauthorized" });
+  if (!req.auth().isAuthenticated) {
+    return res.status(401).json({ message: "Unauthorized - you must be logged in" });
   }
-
-  req.auth = auth; // attach to request for later use
   next();
 };
